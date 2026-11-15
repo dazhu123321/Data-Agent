@@ -277,18 +277,92 @@ class DataToolsMixin:
             # Index out of range — fall through
 
         # ── Mode 3: bare table name heuristic ───────────────────────────────
-        sql_upper = sql.upper()
-        for src in sources:
-            try:
-                tables = [t.upper() for t in src.list_tables()]
-            except Exception:
-                tables = []
-            if any(t in sql_upper for t in tables):
-                log.debug("[route] bare-name heuristic → source=%s", getattr(src, "name", "?"))
-                return src, sql
+        # 不带前缀时：解析所有引用表，再确定执行连接。
+        import sqlglot
+        from sqlglot import expressions as exp
+        from sqlglot.optimizer.scope import traverse_scope
 
-        # Fallback: primary source, unchanged SQL
-        return self.data_source, sql
+        tree = sqlglot.parse_one(sql, read="duckdb")
+
+        # 记录每张表属于哪个数据源。
+        owners = {}
+        for index, src in enumerate(sources, start=1):
+            for table in src.list_tables():
+                owners.setdefault(table.casefold(), []).append((index, table))
+
+        merged = getattr(self, "_merged_source", None)
+        merged_names = {
+            name.casefold(): name for name in merged.list_tables()
+        } if merged is not None else {}
+
+        references = {}
+        for scope in traverse_scope(tree):
+            for _, (_, table) in scope.selected_sources.items():
+                # 跳过 WITH 子查询、普通子查询的别名。
+                if not isinstance(table, exp.Table):
+                    continue
+
+                if table.db or table.catalog:
+                    raise ValueError(
+                        "此自动路由只支持不带数据库限定名的 CSV 表。"
+                    )
+
+                candidates = owners.get(table.name.casefold(), [])
+
+                if len(candidates) > 1:
+                    raise ValueError(
+                        f"表 {table.name} 在多个数据源中存在，"
+                        "请使用 srcN__ 前缀。"
+                    )
+
+                if candidates:
+                    index, bare = candidates[0]
+                    target = f"src{index}__{bare}"
+                elif table.name.casefold() in merged_names:
+                    # 合并连接里已经生成的分析表。
+                    index = 0
+                    target = merged_names[table.name.casefold()]
+                else:
+                    raise ValueError(
+                        f"已连接的数据源中找不到表：{table.name}"
+                    )
+
+                references[id(table)] = (table, index, target)
+
+        if not references:
+            return self.data_source, sql
+
+        used = {index for _, index, _ in references.values()}
+
+        # 所有表属于同一个数据源，继续使用原连接。
+        if len(used) == 1 and 0 not in used:
+            return sources[next(iter(used)) - 1], sql
+
+        # 涉及多个数据源，必须使用合并连接。
+        if merged is None:
+            raise ValueError(
+                "该查询涉及多个数据源，但合并连接不可用，"
+                "请重新连接数据源。"
+            )
+
+        for table, _, target in references.values():
+            if target.casefold() not in merged_names:
+                raise ValueError(
+                    f"合并连接中缺少表：{target}，请重新连接数据源。"
+                )
+
+            # 保留原表名作为别名，避免表名.字段的写法失效。
+            if not table.alias:
+                table.set(
+                    "alias",
+                    exp.TableAlias(
+                        this=exp.to_identifier(table.name, quoted=True)
+                    ),
+                )
+
+            table.set("this", exp.to_identifier(target, quoted=True))
+
+        return merged, tree.sql(dialect="duckdb")
 
     def _tool_query_data(self, sql: str) -> str:
         result, _refs = self._tool_query_data_with_refs(sql)
