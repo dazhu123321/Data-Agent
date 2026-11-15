@@ -161,6 +161,7 @@ scripts/*
 !scripts/clean-chat-chunks.mjs
 !scripts/verify-chat-bundle.mjs
 !scripts/generate_tool_inventory.py
+!scripts/test_chat_skills_disabled.py
 # Public version updater used by the root double-click launcher.
 !scripts/update-frontend-version.ps1
 # Untracked assets

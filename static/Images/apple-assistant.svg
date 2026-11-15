@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="16" fill="#202124"/>
+
+  <defs>
+    <mask id="apple-mask">
+      <rect width="64" height="64" fill="white"/>
+      <circle cx="49" cy="29" r="7" fill="black"/>
+    </mask>
+  </defs>
+
+  <g fill="#F5F5F7">
+    <path d="M32 19C31 12 36 8 42 8C42 14 38 19 32 19Z"/>
+    <path
+      mask="url(#apple-mask)"
+      d="M32 23C26 19 19 19 15 25
+         C9 34 17 51 24 54
+         C27 55 29 52 32 52
+         C35 52 38 55 41 54
+         C48 50 54 35 49 26
+         C45 19 38 19 32 23Z"
+    />
+  </g>
+</svg>

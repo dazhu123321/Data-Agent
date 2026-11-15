@@ -44,7 +44,7 @@ export function mountChatUi() {
   function _assistantAvatar() {
     return h("img", {
       class: "assistant-avatar-img",
-      src: "/static/Images/icon.png",
+      src: "/static/Images/apple-assistant.svg",
       alt: "AI",
     });
   }

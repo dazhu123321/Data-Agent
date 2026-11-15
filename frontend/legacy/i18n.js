@@ -60,7 +60,7 @@
       'welcome.questions': '从一个问题开始',
       'welcome.commands': '或试试分析技能',
       // ── Input ────────────────────────────────────────────────────
-      'input.placeholder': '今天帮你做些什么？  @ 引用对话文件，/ 调用命令',
+      'input.placeholder': '输入你想分析的销售、库存或渠道问题…',
       'input.kbd_hint': '<kbd>Enter</kbd> 发送 · <kbd>Shift</kbd>+<kbd>Enter</kbd> 换行 · <kbd>/</kbd> 命令',
       'send.title': '发送 (Enter)',
       'composer.skills': '技能',
@@ -553,7 +553,7 @@
       'welcome.questions': 'Start with a question',
       'welcome.commands': 'Or try an analysis skill',
       // ── Input ────────────────────────────────────────────────────
-      'input.placeholder': 'What can I help with?  @ reference files, / for commands',
+      'input.placeholder': 'Ask a question about sales, inventory, or channel performance…',
       'input.kbd_hint': '<kbd>Enter</kbd> Send · <kbd>Shift</kbd>+<kbd>Enter</kbd> Newline · <kbd>/</kbd> Commands',
       'send.title': 'Send (Enter)',
       'composer.skills': 'Skills',

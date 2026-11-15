@@ -8,3 +8,66 @@
 @import "parts/kb.css?v=v1.4.0-motion-1";
 @import "parts/business-canvas.css";
 @import "parts/diagram.css";
+
+/* 本地界面：隐藏暂不需要的功能入口 */
+body[data-run-mode="local"] :is(
+  /* MCP：侧栏状态、导航、输入框按钮和管理面板 */
+  #mcp-sidebar-card,
+  [data-sidebar-nav="mcp"],
+  [data-action="openMcpSettings"],
+  #sb-panel-mcp,
+
+  /* 商业画布：入口和面板 */
+  [data-action="openBusinessCanvas"],
+  #business-canvas-root,
+
+  /* 帮助文档：入口和弹窗 */
+  [data-action="openInstruction"],
+  #ov-instruction,
+
+  /* 左下角“本地运行 / 无需登录”区域 */
+  .sb-account-wrap,
+
+  /* 版本号和作者链接 */
+  .sb-footer-meta,
+
+  /* 检查更新：按钮和弹窗 */
+  .sb-footer-update,
+  #ov-update,
+
+
+    /* 设置：侧栏按钮和通用设置弹窗 */
+  .sb-footer-settings,
+  [data-action="openOverlay:ov-app-settings"],
+  #ov-app-settings,
+
+  /* 社群：按钮和弹窗 */
+  .sb-footer-community,
+  [data-action="openOverlay:ov-community"],
+  #ov-community,
+
+  /* 对话输入框中的团队按钮 */
+  [data-action="openTeams"]
+) {
+  display: none !important;
+}
+
+/* 替换 AI 回复头像 */
+.msg.assistant .assistant-avatar-img {
+  content: url("/static/Images/apple-assistant.svg");
+}
+
+/* 3C 本地项目：Skills 已在后端禁用，同时隐藏全部技能入口。 */
+:is(
+  [data-sidebar-nav="skills"],
+  [data-action="openPanel:skills"],
+  #sb-panel-skills,
+  #skill-modal-overlay,
+  #skill-picker,
+  #skill-badge,
+  [data-action="openSkillPicker"],
+  [data-action="fillSkillHint"],
+  .welcome-prompt-group[aria-labelledby="welcome-commands-label"]
+) {
+  display: none !important;
+}

@@ -30,6 +30,7 @@ from agent.reasoning import split_reasoning_tags
 from agent.retry import call_with_retry as _call_with_retry
 from agent.skills import SkillLoader
 from infrastructure.artifact_lifecycle import register_artifact
+from infrastructure.product_features import CHAT_SKILLS_ENABLED
 
 log = logging.getLogger(__name__)
 bp = Blueprint("chat", __name__)
@@ -346,6 +347,11 @@ def _resolve_activation(sess, payload: dict, *, allow_session_skill: bool = Fals
         sess.auto_loaded_skill = ""
         if auto and not skill_name and not command_name and not internal_action:
             skill_name = auto
+
+    if skill_name and not CHAT_SKILLS_ENABLED:
+        raise ActivationRequestError(
+            "本项目已禁用 Skills，请直接输入业务问题。", "skills_disabled",
+        )
 
     # Compatibility window for S3: current confirmation cards still send
     # internal actions through `command`. S4 will emit `internal_action`.

@@ -75,7 +75,7 @@ import { renderMd } from "./markdown.js";
     if (options.variant) div.classList.add(`msg-${options.variant}`);
     const avatar = role === "user"
       ? "👤"
-      : `<img class="assistant-avatar-img" src="/static/Images/icon.png" alt="AI">`;
+      : `<img class="assistant-avatar-img" src="/static/Images/apple-assistant.svg" alt="零售分析助手">`;
     div.innerHTML = `
       <div class="msg-avatar">${avatar}</div>
       <div class="msg-body">

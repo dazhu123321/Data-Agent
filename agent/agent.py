@@ -16,6 +16,7 @@ import copy
 import os
 import urllib.parse
 from infrastructure.paths import content_data_path
+from infrastructure.product_features import CHAT_SKILLS_ENABLED
 import re
 import uuid
 from typing import Iterator, List, Dict, Any, Optional, Tuple
@@ -1437,6 +1438,8 @@ class BusinessAgent(DataToolsMixin, ExportToolsMixin):
             return f"Unable to check workspace status: {e}"
 
     def _get_skill_def(self, name: str) -> SkillDef | None:
+        if not CHAT_SKILLS_ENABLED:
+            return None
         runtime = self._workspace_runtime()
         loader = SkillLoader(
             workspace_dir=(runtime.workdir / ".baa" / "skills") if runtime else None,
@@ -1502,6 +1505,13 @@ class BusinessAgent(DataToolsMixin, ExportToolsMixin):
                 internal_action=legacy if legacy in INTERNAL_ACTIONS else "",
                 command_name=legacy if legacy and legacy not in INTERNAL_ACTIONS else "",
             )
+        if not CHAT_SKILLS_ENABLED:
+            # Request flags and restored sessions cannot re-enable Skills.
+            auto_match_skill = False
+            if activation.skill_name or active_skill is not None:
+                yield {"type": "error", "message": "本项目已禁用 Skills，请直接输入业务问题。"}
+                yield {"type": "done"}
+                return
         if active_skill is not None and active_skill.name != activation.skill_name:
             raise ValueError("active Skill does not match activation context")
         if active_command is not None and active_command.name != activation.command_name:

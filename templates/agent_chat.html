@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>智析Agent</title>
-<link rel="icon" href="{{ url_for('static', filename='Images/icon.png') }}">
-<script src="{{ url_for('static', filename='js/theme_bootstrap.js', v='v1.5.2') }}"></script>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/agent_chat.css', v='v1.5.2') }}">
+<title>3C零售分析助手</title>
+<link rel="icon"
+      href="{{ url_for('static', filename='Images/retail-logo.svg') }}"><script src="{{ url_for('static', filename='js/theme_bootstrap.js', v='v1.5.2') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/agent_chat.css', v='retail-no-skills-1') }}">
 {% if desktop_lifecycle_enabled %}
 <script defer src="{{ url_for('static', filename='js/modules/desktop_lifecycle.js', v='v1.5.2') }}"></script>
 {% endif %}
@@ -33,13 +33,24 @@
   <aside class="sidebar sidebar-hub" id="app-sidebar">
     <div class="sb-main">
       <header class="sb-brand">
-        <img class="sb-brand-icon" src="/static/Images/icon.png" alt="智析 Agent">
-        <div class="sb-brand-text">
-          <span class="sb-brand-name" data-i18n="app.title">智析 Agent</span>
-          <span class="sb-brand-tagline" data-i18n="app.subtitle">Intelligent Analysis Agent</span>
-        </div>
-      </header>
+            <img
+              class="sb-brand-icon"
+              src="{{ url_for('static', filename='Images/retail-logo.svg') }}"
+              alt="3C零售分析助手"
+            >
 
+            <div class="sb-brand-text">
+              <span class="sb-brand-name">3C零售分析助手</span>
+              <span class="sb-brand-tagline">3C Retail Analytics</span>
+            </div>
+      </header>
+      <button
+        type="button"
+        class="sb-btn sb-btn-primary sb-btn-block"
+        data-action="newChat"
+      >
+        ＋ 新对话
+      </button>
       <section class="sb-status">
         <button class="sb-status-row" id="session-row" data-action="openSidebarDrawer:sessions"
                 title="查看会话文件">
@@ -649,18 +660,34 @@
 
     <div class="messages" id="messages">
       <div class="welcome" id="welcome">
-        <img src="/static/Images/icon.png" alt="智析 Agent" class="welcome-brand-logo">
-        <h1 data-i18n="welcome.title">开始您的数据分析</h1>
-        <p data-i18n-html="welcome.desc">连接数据库或上传 Excel，用自然语言提问，AI 会自动查询、分析并生成图表。<br>
-           输入 <strong>/</strong> 可快速选择专属命令。</p>
+        <img
+          src="{{ url_for('static', filename='Images/apple-assistant.svg') }}"
+          alt="3C零售分析助手"
+          class="welcome-brand-logo"
+        >
+
+        <h1>让每一笔销售、每一件库存都有据可查</h1>
+
+        <p>
+          上传门店销售、商品库存或渠道数据，直接提问。<br>
+          分析产品销量、库存积压与渠道收益，辅助日常经营决策。
+        </p>
         <div class="welcome-prompts">
           <section class="welcome-prompt-group" aria-labelledby="welcome-questions-label">
             <h3 id="welcome-questions-label" data-i18n="welcome.questions">从一个问题开始</h3>
             <div class="hint-chips">
-              <button type="button" class="hint-chip" data-action="fillHint" data-i18n="hint.sales_category">各品类的销售额是多少？</button>
-              <button type="button" class="hint-chip" data-action="fillHint" data-i18n="hint.sales_trend">近12个月的销售趋势如何？</button>
-              <button type="button" class="hint-chip" data-action="fillHint" data-i18n="hint.top_customers">哪些客户贡献了最多收入？</button>
-              <button type="button" class="hint-chip" data-action="fillHint" data-i18n="hint.region_chart">生成各地区业绩对比柱状图</button>
+              <button type="button" class="hint-chip" data-action="fillHint">
+                统计2019年各品类的销量和估算销售额。
+              </button>
+              <button type="button" class="hint-chip" data-action="fillHint">
+                分析2019年线上与线下渠道的月度销售趋势。
+              </button>
+              <button type="button" class="hint-chip" data-action="fillHint">
+                查询2019年12月零销量但仍有库存的门店和商品。
+              </button>
+              <button type="button" class="hint-chip" data-action="fillHint">
+                按月比较2019年经销商的进货量、终端销量和期末库存。
+              </button>
             </div>
           </section>
           <section class="welcome-prompt-group" aria-labelledby="welcome-commands-label">
@@ -730,7 +757,7 @@
           <div class="composer-input-layer">
             <textarea id="msg-input" rows="1"
               data-i18n-ph="input.placeholder"
-              placeholder="今天帮你做些什么？  @ 引用对话文件，/ 调用命令"></textarea>
+              placeholder="输入你想分析的销售、库存或渠道问题…"></textarea>
             <div class="prompt-suggestion-ghost" id="prompt-suggestion-ghost" aria-hidden="true"></div>
           </div>
 
@@ -1670,6 +1697,6 @@
 <script src="{{ url_for('static', filename='vendor/vue.global.prod.js') }}"></script>
 
 <!-- ── ES module entry; non-critical UI islands load from dist/chunks on demand ── -->
-<script type="module" src="{{ url_for('static', filename='dist/chat-app.js', v='v1.5.2') }}"></script>
+<script type="module" src="{{ url_for('static', filename='dist/chat-app.js', v='retail-placeholder-1') }}"></script>
 </body>
 </html>

@@ -91,7 +91,7 @@ import {
       ? window.BAA.slash?.getCommand?.(state.activeCommand)
       : null;
     if (command?.argumentHint) return command.argumentHint;
-    return window.t ? t("input.placeholder") : "今天帮你做些什么？";
+    return window.t ? t("input.placeholder") : "输入你想分析的销售、库存或渠道问题…";
   }
 
   function _hasPromptSuggestionMarker(input = $("msg-input")) {

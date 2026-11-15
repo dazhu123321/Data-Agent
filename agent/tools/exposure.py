@@ -10,6 +10,7 @@ from copy import deepcopy
 import re
 
 from agent.activation import ActivationContext
+from infrastructure.product_features import CHAT_SKILLS_ENABLED
 
 from .registry import BUILTIN_TOOL_REGISTRY
 
@@ -271,6 +272,8 @@ def filter_tools_for_turn(
     for schema in tools:
         name = _tool_name(schema)
         if not name:
+            continue
+        if name == "load_analysis_skill" and not CHAT_SKILLS_ENABLED:
             continue
         if name.startswith("mcp__"):
             if (

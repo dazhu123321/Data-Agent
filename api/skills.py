@@ -5,6 +5,7 @@ import shutil
 from pathlib import Path
 
 from flask import Blueprint, jsonify, request
+from infrastructure.product_features import CHAT_SKILLS_ENABLED
 
 from agent.skills import SkillLoader
 from agent.skills.parser import SkillError, parse_skill_file
@@ -59,6 +60,8 @@ def _build_skill_md(name, description, icon, allowed_tools, tags, prompt):
 @bp.get("/api/skills")
 def list_skills():
     """List all available skills (builtin + user + workspace)."""
+    if not CHAT_SKILLS_ENABLED:
+        return jsonify({"skills": [], "diagnostics": [], "enabled": False})
     workspace_dir = None
     sid = (request.args.get("sid") or "").strip()
     mode = (request.args.get("mode") or "").strip().lower()
