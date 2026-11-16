@@ -29,7 +29,7 @@ PyYAML>=6.0.3          # agent skill front matter parsing (import name: yaml)
 openpyxl>=3.1.5
 xlrd>=2.0.2
 python-calamine>=0.1.0
-pdfplumber>=0.11.0    # PDF table extraction for the web-table ingest pipeline (MIT, pure Python)
+pdfplumber>=0.11.10    # PDF table extraction for the web-table ingest pipeline (MIT, pure Python)
 
 # Viz
 plotly>=7.1.0
